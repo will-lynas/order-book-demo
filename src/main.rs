@@ -1,6 +1,7 @@
 use anyhow::Result;
 use askama_axum::Template;
 use axum::{routing::get, Router};
+use std::net::SocketAddr;
 use tokio::net::TcpListener;
 
 #[derive(Template)]
@@ -15,8 +16,9 @@ async fn index_handler() -> IndexTemplate {
 async fn main() -> Result<()> {
     let app = Router::new().route("/", get(index_handler));
 
-    let listener = TcpListener::bind("127.0.0.1:5900").await?;
-    println!("Listening on http://127.0.0.1:5900");
+    let addr: SocketAddr = "127.0.0.1:5900".parse()?;
+    let listener = TcpListener::bind(addr).await?;
+    println!("Listening on http://{}", addr);
 
     axum::serve(listener, app).await?;
     Ok(())

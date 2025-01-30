@@ -4,23 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTMX Demo</title>
+    <title>HTMX Counter Demo</title>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/static/index.css" rel="stylesheet">
 </head>
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <div class="bg-white p-8 rounded-lg shadow-md">
-        <h1 class="text-2xl font-bold mb-4">HTMX Demo</h1>
-
-        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" hx-post="/clicked"
-            hx-swap="innerHTML" hx-target="#result">
+<body class="flex min-h-screen items-center justify-center bg-gray-100">
+    <div class="text-center">
+        <h1 class="mb-4 text-2xl font-bold">Click Counter</h1>
+        <p class="mb-4">Current count: <span id="counter">{{ count }}</span></p>
+        <button hx-post="/clicked" hx-target="#counter"
+            class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
             Click me!
         </button>
-
-        <div id="result" class="mt-4">
-            <!-- Result will appear here -->
-        </div>
     </div>
 </body>
 

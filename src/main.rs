@@ -1,6 +1,9 @@
 use anyhow::Result;
 use askama_axum::Template;
-use axum::{routing::get, Router};
+use axum::{
+    routing::{get, post},
+    Router,
+};
 use std::net::SocketAddr;
 use tokio::net::TcpListener;
 use tower_http::services::ServeDir;
@@ -9,13 +12,22 @@ use tower_http::services::ServeDir;
 #[template(path = "index.html")]
 struct IndexTemplate {}
 
+#[derive(Template)]
+#[template(path = "click_response.html")]
+struct ClickResponseTemplate {}
+
 async fn index_handler() -> IndexTemplate {
     IndexTemplate {}
+}
+
+async fn click_handler() -> ClickResponseTemplate {
+    ClickResponseTemplate {}
 }
 
 fn create_router() -> Router {
     Router::new()
         .route("/", get(index_handler))
+        .route("/clicked", post(click_handler))
         .nest_service("/static", ServeDir::new("static"))
 }
 

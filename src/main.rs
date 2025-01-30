@@ -4,14 +4,10 @@ use tokio::net::TcpListener;
 
 #[derive(Template)]
 #[template(path = "index.html")]
-struct IndexTemplate {
-    name: String,
-}
+struct IndexTemplate {}
 
 async fn index_handler() -> IndexTemplate {
-    IndexTemplate {
-        name: "World".to_string(),
-    }
+    IndexTemplate {}
 }
 
 #[tokio::main]

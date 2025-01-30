@@ -1,3 +1,4 @@
+use anyhow::Result;
 use askama_axum::Template;
 use axum::{routing::get, Router};
 use tokio::net::TcpListener;
@@ -11,7 +12,7 @@ async fn index_handler() -> IndexTemplate {
 }
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> Result<()> {
     let app = Router::new().route("/", get(index_handler));
 
     let listener = TcpListener::bind("127.0.0.1:5900").await?;

@@ -41,7 +41,6 @@ async fn click_handler(State(state): State<AppState>) -> ClickResponseTemplate {
 }
 
 fn create_router() -> Router {
-    // Create shared state
     let state = AppState {
         counter: Arc::new(AtomicU64::new(0)),
     };

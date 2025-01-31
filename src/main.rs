@@ -3,7 +3,7 @@ use askama_axum::Template;
 use axum::{
     extract::State,
     routing::{get, post},
-    Router,
+    Form, Router,
 };
 use serde::Deserialize;
 use std::sync::Arc;
@@ -39,7 +39,7 @@ async fn index_handler(State(state): State<AppState>) -> IndexTemplate {
 
 async fn submit_entry_handler(
     State(state): State<AppState>,
-    axum::Form(form): axum::Form<Entry>,
+    Form(form): Form<Entry>,
 ) -> impl axum::response::IntoResponse {
     let mut entries = state.entries.lock().unwrap();
     entries.push(form);

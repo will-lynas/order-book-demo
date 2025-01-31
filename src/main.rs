@@ -36,7 +36,7 @@ async fn index_handler(State(state): State<AppState>) -> IndexTemplate {
 async fn submit_entry_handler(
     State(state): State<AppState>,
     Form(form): Form<Entry>,
-) -> impl axum::response::IntoResponse {
+) -> TableTemplate {
     let mut entries = state.entries.lock().unwrap();
     entries.push(form);
 

@@ -13,6 +13,10 @@
     <div class="text-center">
         <h1 class="mb-4 text-2xl font-bold">Price and Quantity Tracker</h1>
 
+        <div id="entries-table">
+            {% include "table.html" %}
+        </div>
+
         <form hx-post="/submit-entry" hx-target="#entries-table" hx-swap="innerHTML">
             <div>
                 <label for="price">Price:</label>
@@ -24,10 +28,6 @@
             </div>
             <button type="submit">Add Entry</button>
         </form>
-
-        <div id="entries-table">
-            {% include "table.html" %}
-        </div>
     </div>
 </body>
 

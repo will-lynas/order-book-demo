@@ -4,19 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTMX Counter Demo</title>
+    <title>Price and Quantity Tracker</title>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <link href="/static/index.css" rel="stylesheet">
 </head>
 
 <body class="flex min-h-screen items-center justify-center bg-gray-100">
     <div class="text-center">
-        <h1 class="mb-4 text-2xl font-bold">Click Counter</h1>
-        <p class="mb-4">Current count: <span id="counter">{{ count }}</span></p>
-        <button hx-post="/clicked" hx-target="#counter"
-            class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
-            Click me!
-        </button>
+        <h1 class="mb-4 text-2xl font-bold">Price and Quantity Tracker</h1>
+
+        <form hx-post="/submit-entry" hx-target="#entries-table" hx-swap="innerHTML">
+            <div>
+                <label for="price">Price:</label>
+                <input type="number" step="0.01" name="price" id="price" required>
+            </div>
+            <div>
+                <label for="quantity">Quantity:</label>
+                <input type="number" step="0.01" name="quantity" id="quantity" required>
+            </div>
+            <button type="submit">Add Entry</button>
+        </form>
+
+        <div id="entries-table">
+            {% include "table.html" %}
+        </div>
     </div>
 </body>
 

@@ -5,49 +5,65 @@ use axum::{
     routing::{get, post},
     Router,
 };
+use serde::Deserialize;
 use std::sync::Arc;
 use std::{
     net::SocketAddr,
     sync::atomic::{AtomicU64, Ordering},
+    sync::Mutex,
 };
 use tokio::net::TcpListener;
 use tower_http::services::ServeDir;
 
+#[derive(Clone, Debug, Deserialize)]
+struct Entry {
+    price: f64,
+    quantity: f64,
+}
+
 #[derive(Clone)]
 struct AppState {
-    counter: Arc<AtomicU64>,
+    entries: Arc<Mutex<Vec<Entry>>>,
 }
 
 #[derive(Template)]
 #[template(path = "index.html")]
 struct IndexTemplate {
-    count: u64,
-}
-
-#[derive(Template)]
-#[template(path = "click_response.html")]
-struct ClickResponseTemplate {
-    count: u64,
+    entries: Vec<Entry>,
 }
 
 async fn index_handler(State(state): State<AppState>) -> IndexTemplate {
-    let count = state.counter.load(Ordering::Relaxed);
-    IndexTemplate { count }
+    let entries = state.entries.lock().unwrap().clone();
+    IndexTemplate { entries }
 }
 
-async fn click_handler(State(state): State<AppState>) -> ClickResponseTemplate {
-    let count = state.counter.fetch_add(1, Ordering::Relaxed) + 1;
-    ClickResponseTemplate { count }
+async fn submit_entry_handler(
+    State(state): State<AppState>,
+    axum::Form(form): axum::Form<Entry>,
+) -> impl axum::response::IntoResponse {
+    let mut entries = state.entries.lock().unwrap();
+    entries.push(form);
+
+    let template = TableTemplate {
+        entries: entries.clone(),
+    };
+    template.render().unwrap()
+}
+
+#[derive(Template)]
+#[template(path = "table.html")]
+struct TableTemplate {
+    entries: Vec<Entry>,
 }
 
 fn create_router() -> Router {
     let state = AppState {
-        counter: Arc::new(AtomicU64::new(0)),
+        entries: Arc::new(Mutex::new(Vec::new())),
     };
 
     Router::new()
         .route("/", get(index_handler))
-        .route("/clicked", post(click_handler))
+        .route("/submit-entry", post(submit_entry_handler))
         .nest_service("/static", ServeDir::new("static"))
         .with_state(state)
 }

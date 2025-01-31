@@ -1,0 +1,18 @@
+<table border="1">
+    <thead>
+        <tr>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in entries %}
+        <tr>
+            <td>${{ entry.price }}</td>
+            <td>{{ entry.quantity }}</td>
+            <td>${{ entry.price * entry.quantity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -7,11 +7,7 @@ use axum::{
 };
 use serde::Deserialize;
 use std::sync::Arc;
-use std::{
-    net::SocketAddr,
-    sync::atomic::{AtomicU64, Ordering},
-    sync::Mutex,
-};
+use std::{net::SocketAddr, sync::Mutex};
 use tokio::net::TcpListener;
 use tower_http::services::ServeDir;
 

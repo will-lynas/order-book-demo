@@ -62,14 +62,11 @@ async fn submit_entry_handler(
         quantity: form.quantity,
     };
 
-    match form.entry_type {
-        EntryType::Buy => {
-            state.buy_entries.lock().unwrap().push(entry);
-        }
-        EntryType::Sell => {
-            state.sell_entries.lock().unwrap().push(entry);
-        }
-    }
+    let entries = match form.entry_type {
+        EntryType::Buy => &state.buy_entries,
+        EntryType::Sell => &state.sell_entries,
+    };
+    entries.lock().unwrap().push(entry);
 
     let buy_entries = state.buy_entries.lock().unwrap().clone();
     let sell_entries = state.sell_entries.lock().unwrap().clone();

@@ -3,7 +3,6 @@
         <tr>
             <th class="bg-blue-500 text-white px-5 py-3 text-left">Price</th>
             <th class="bg-blue-500 text-white px-5 py-3 text-left">Quantity</th>
-            <th class="bg-blue-500 text-white px-5 py-3 text-left">Total</th>
         </tr>
     </thead>
     <tbody>
@@ -11,7 +10,6 @@
         <tr class="hover:bg-gray-50">
             <td class="px-5 py-2 border-t border-gray-200">${{ entry.price }}</td>
             <td class="px-5 py-2 border-t border-gray-200">{{ entry.quantity }}</td>
-            <td class="px-5 py-2 border-t border-gray-200">${{ entry.price * entry.quantity }}</td>
         </tr>
         {% endfor %}
     </tbody>

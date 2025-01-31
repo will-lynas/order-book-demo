@@ -15,7 +15,7 @@
                 {% for entry in entries %}
                 {% if entry.entry_type == EntryType::Buy %}
                 <tr class="hover:bg-gray-50">
-                    <td class="px-5 py-2 border-t border-gray-200">${{ entry.price }}</td>
+                    <td class="px-5 py-2 border-t border-gray-200">{{ entry.price }}</td>
                     <td class="px-5 py-2 border-t border-gray-200">{{ entry.quantity }}</td>
                 </tr>
                 {% endif %}
@@ -40,7 +40,7 @@
                 {% for entry in entries %}
                 {% if entry.entry_type == EntryType::Sell %}
                 <tr class="hover:bg-gray-50">
-                    <td class="px-5 py-2 border-t border-gray-200">${{ entry.price }}</td>
+                    <td class="px-5 py-2 border-t border-gray-200">{{ entry.price }}</td>
                     <td class="px-5 py-2 border-t border-gray-200">{{ entry.quantity }}</td>
                 </tr>
                 {% endif %}

@@ -15,7 +15,6 @@ use tower_http::services::ServeDir;
 struct Entry {
     price: f64,
     quantity: f64,
-    entry_type: EntryType,
 }
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
@@ -23,6 +22,13 @@ struct Entry {
 enum EntryType {
     Buy,
     Sell,
+}
+
+#[derive(Deserialize)]
+struct FormData {
+    entry_type: EntryType,
+    price: f64,
+    quantity: f64,
 }
 
 #[derive(Clone)]
@@ -34,44 +40,51 @@ struct AppState {
 #[derive(Template)]
 #[template(path = "index.html")]
 struct IndexTemplate {
-    entries: Vec<Entry>,
+    buy_entries: Vec<Entry>,
+    sell_entries: Vec<Entry>,
 }
 
 async fn index_handler(State(state): State<AppState>) -> IndexTemplate {
     let buy_entries = state.buy_entries.lock().unwrap().clone();
     let sell_entries = state.sell_entries.lock().unwrap().clone();
-    let mut entries = Vec::new();
-    entries.extend(buy_entries);
-    entries.extend(sell_entries);
-    IndexTemplate { entries }
+    IndexTemplate {
+        buy_entries,
+        sell_entries,
+    }
 }
 
 async fn submit_entry_handler(
     State(state): State<AppState>,
-    Form(form): Form<Entry>,
+    Form(form): Form<FormData>,
 ) -> TableTemplate {
+    let entry = Entry {
+        price: form.price,
+        quantity: form.quantity,
+    };
+
     match form.entry_type {
         EntryType::Buy => {
-            state.buy_entries.lock().unwrap().push(form);
+            state.buy_entries.lock().unwrap().push(entry);
         }
         EntryType::Sell => {
-            state.sell_entries.lock().unwrap().push(form);
+            state.sell_entries.lock().unwrap().push(entry);
         }
     }
 
     let buy_entries = state.buy_entries.lock().unwrap().clone();
     let sell_entries = state.sell_entries.lock().unwrap().clone();
-    let mut entries = Vec::new();
-    entries.extend(buy_entries);
-    entries.extend(sell_entries);
 
-    TableTemplate { entries }
+    TableTemplate {
+        buy_entries,
+        sell_entries,
+    }
 }
 
 #[derive(Template)]
 #[template(path = "table.html")]
 struct TableTemplate {
-    entries: Vec<Entry>,
+    buy_entries: Vec<Entry>,
+    sell_entries: Vec<Entry>,
 }
 
 fn create_router() -> Router {

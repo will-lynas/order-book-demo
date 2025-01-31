@@ -44,10 +44,9 @@ async fn submit_entry_handler(
     let mut entries = state.entries.lock().unwrap();
     entries.push(form);
 
-    let template = TableTemplate {
+    TableTemplate {
         entries: entries.clone(),
-    };
-    template.render().unwrap()
+    }
 }
 
 #[derive(Template)]

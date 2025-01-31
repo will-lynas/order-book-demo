@@ -15,6 +15,14 @@ use tower_http::services::ServeDir;
 struct Entry {
     price: f64,
     quantity: f64,
+    entry_type: EntryType,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+enum EntryType {
+    Buy,
+    Sell,
 }
 
 #[derive(Clone)]

@@ -17,33 +17,73 @@
             {% include "table.html" %}
         </div>
 
-        <form hx-post="/submit-entry" hx-target="#entries-table" hx-swap="innerHTML"
-            class="mt-5 w-full max-w-md mx-auto">
-            <table class="w-full">
-                <thead>
-                    <tr>
-                        <th class="bg-green-500 text-white p-2.5">Price</th>
-                        <th class="bg-green-500 text-white p-2.5">Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border border-gray-200">
-                        <td class="p-1.5">
-                            <input type="number" step="0.01" name="price" id="price" required
-                                class="w-full p-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-green-500">
-                        </td>
-                        <td class="p-1.5">
-                            <input type="number" name="quantity" id="quantity" required
-                                class="w-full p-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-green-500">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <button type="submit"
-                class="mt-2.5 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
-                Add Entry
-            </button>
-        </form>
+        <div class="flex gap-4 justify-center">
+            <!-- Buy Form -->
+            <form hx-post="/submit-entry" hx-target="#entries-table" hx-swap="innerHTML"
+                class="mt-5 w-full max-w-md mx-auto">
+                <input type="hidden" name="entry_type" value="buy">
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th class="bg-green-500 text-white p-2.5" colspan="2">Buy Entry</th>
+                        </tr>
+                        <tr>
+                            <th class="bg-green-400 text-white p-2">Price</th>
+                            <th class="bg-green-400 text-white p-2">Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border border-gray-200">
+                            <td class="p-1.5">
+                                <input type="number" step="0.01" name="price" required
+                                    class="w-full p-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-green-500">
+                            </td>
+                            <td class="p-1.5">
+                                <input type="number" name="quantity" required
+                                    class="w-full p-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-green-500">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="submit"
+                    class="mt-2.5 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
+                    Add Buy Entry
+                </button>
+            </form>
+
+            <!-- Sell Form -->
+            <form hx-post="/submit-entry" hx-target="#entries-table" hx-swap="innerHTML"
+                class="mt-5 w-full max-w-md mx-auto">
+                <input type="hidden" name="entry_type" value="sell">
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th class="bg-red-500 text-white p-2.5" colspan="2">Sell Entry</th>
+                        </tr>
+                        <tr>
+                            <th class="bg-red-400 text-white p-2">Price</th>
+                            <th class="bg-red-400 text-white p-2">Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border border-gray-200">
+                            <td class="p-1.5">
+                                <input type="number" step="0.01" name="price" required
+                                    class="w-full p-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-red-500">
+                            </td>
+                            <td class="p-1.5">
+                                <input type="number" name="quantity" required
+                                    class="w-full p-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-red-500">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="submit"
+                    class="mt-2.5 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors">
+                    Add Sell Entry
+                </button>
+            </form>
+        </div>
     </div>
 </body>
 

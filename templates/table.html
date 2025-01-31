@@ -1,15 +1,30 @@
 <table class="w-full my-5 border border-gray-200 rounded-lg overflow-hidden">
     <thead>
         <tr>
-            <th class="bg-blue-500 text-white px-5 py-3 text-center">Price</th>
-            <th class="bg-blue-500 text-white px-5 py-3 text-center">Quantity</th>
+            <th class="bg-blue-500 text-white px-5 py-3 text-center" colspan="2">Buy</th>
+            <th class="bg-blue-500 text-white px-5 py-3 text-center" colspan="2">Sell</th>
+        </tr>
+        <tr>
+            <th class="bg-blue-400 text-white px-5 py-2 text-center">Price</th>
+            <th class="bg-blue-400 text-white px-5 py-2 text-center">Quantity</th>
+            <th class="bg-blue-400 text-white px-5 py-2 text-center">Price</th>
+            <th class="bg-blue-400 text-white px-5 py-2 text-center">Quantity</th>
         </tr>
     </thead>
     <tbody>
         {% for entry in entries %}
         <tr class="hover:bg-gray-50">
+            {% if entry.entry_type == EntryType::Buy %}
             <td class="px-5 py-2 border-t border-gray-200">${{ entry.price }}</td>
             <td class="px-5 py-2 border-t border-gray-200">{{ entry.quantity }}</td>
+            <td></td>
+            <td></td>
+            {% else %}
+            <td></td>
+            <td></td>
+            <td class="px-5 py-2 border-t border-gray-200">${{ entry.price }}</td>
+            <td class="px-5 py-2 border-t border-gray-200">{{ entry.quantity }}</td>
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>

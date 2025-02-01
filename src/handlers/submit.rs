@@ -33,8 +33,8 @@ pub async fn handler(State(state): State<AppState>, Form(form): Form<FormData>) 
 
     let mut order_book = state.order_book.lock().unwrap();
     match form.entry_type {
-        EntryType::Buy => order_book.buy_entries.push(entry),
-        EntryType::Sell => order_book.sell_entries.push(entry),
+        EntryType::Buy => order_book.add_buy_entry(entry),
+        EntryType::Sell => order_book.add_sell_entry(entry),
     }
 
     let (buy_entries, sell_entries) = order_book.get_first_n_entries(6);

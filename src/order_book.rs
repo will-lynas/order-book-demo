@@ -17,4 +17,12 @@ impl OrderBook {
             self.sell_entries.iter().take(n).cloned().collect(),
         )
     }
+
+    pub fn add_buy_entry(&mut self, entry: Entry) {
+        self.buy_entries.push(entry);
+    }
+
+    pub fn add_sell_entry(&mut self, entry: Entry) {
+        self.sell_entries.push(entry);
+    }
 }

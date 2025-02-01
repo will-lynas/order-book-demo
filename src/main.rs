@@ -1,7 +1,5 @@
 use anyhow::Result;
-use askama_axum::Template;
 use axum::{
-    extract::State,
     routing::{get, post},
     Router,
 };

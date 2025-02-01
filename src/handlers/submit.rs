@@ -37,8 +37,9 @@ pub async fn handler(State(state): State<AppState>, Form(form): Form<FormData>) 
         EntryType::Sell => order_book.sell_entries.push(entry),
     }
 
+    let (buy_entries, sell_entries) = order_book.get_first_n_entries(6);
     TableTemplate {
-        buy_entries: order_book.buy_entries.iter().take(6).cloned().collect(),
-        sell_entries: order_book.sell_entries.iter().take(6).cloned().collect(),
+        buy_entries,
+        sell_entries,
     }
 }

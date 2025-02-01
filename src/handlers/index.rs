@@ -12,8 +12,9 @@ pub struct IndexTemplate {
 
 pub async fn handler(State(state): State<AppState>) -> IndexTemplate {
     let order_book = state.order_book.lock().unwrap();
+    let (buy_entries, sell_entries) = order_book.get_first_n_entries(6);
     IndexTemplate {
-        buy_entries: order_book.buy_entries.iter().take(6).cloned().collect(),
-        sell_entries: order_book.sell_entries.iter().take(6).cloned().collect(),
+        buy_entries,
+        sell_entries,
     }
 }

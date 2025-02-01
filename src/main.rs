@@ -3,24 +3,19 @@ use axum::{
     routing::{get, post},
     Router,
 };
-use serde::Deserialize;
-use std::sync::Arc;
-use std::{net::SocketAddr, sync::Mutex};
+use std::net::SocketAddr;
+use std::sync::{Arc, Mutex};
 use tokio::net::TcpListener;
 use tower_http::services::ServeDir;
 
 mod handlers;
+mod order_book;
 
-#[derive(Clone, Debug, Deserialize)]
-pub struct Entry {
-    pub price: f64,
-    pub quantity: f64,
-}
+use order_book::OrderBook;
 
 #[derive(Clone, Default)]
 pub struct AppState {
-    pub buy_entries: Arc<Mutex<Vec<Entry>>>,
-    pub sell_entries: Arc<Mutex<Vec<Entry>>>,
+    pub order_book: Arc<Mutex<OrderBook>>,
 }
 
 fn create_router() -> Router {

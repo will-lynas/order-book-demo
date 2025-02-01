@@ -2,7 +2,7 @@ use askama_axum::Template;
 use axum::{extract::State, Form};
 use serde::Deserialize;
 
-use crate::{AppState, Entry};
+use crate::{order_book::Entry, AppState};
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "lowercase")]
@@ -31,17 +31,14 @@ pub async fn handler(State(state): State<AppState>, Form(form): Form<FormData>) 
         quantity: form.quantity,
     };
 
-    let entries = match form.entry_type {
-        EntryType::Buy => &state.buy_entries,
-        EntryType::Sell => &state.sell_entries,
-    };
-    entries.lock().unwrap().push(entry);
-
-    let buy_entries = state.buy_entries.lock().unwrap().clone();
-    let sell_entries = state.sell_entries.lock().unwrap().clone();
+    let mut order_book = state.order_book.lock().unwrap();
+    match form.entry_type {
+        EntryType::Buy => order_book.buy_entries.push(entry),
+        EntryType::Sell => order_book.sell_entries.push(entry),
+    }
 
     TableTemplate {
-        buy_entries: buy_entries.into_iter().take(6).collect(),
-        sell_entries: sell_entries.into_iter().take(6).collect(),
+        buy_entries: order_book.buy_entries.iter().take(6).cloned().collect(),
+        sell_entries: order_book.sell_entries.iter().take(6).cloned().collect(),
     }
 }

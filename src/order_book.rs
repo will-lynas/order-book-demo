@@ -1,6 +1,4 @@
-use serde::Deserialize;
-
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug)]
 pub struct Entry {
     pub price: f64,
     pub quantity: f64,

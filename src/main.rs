@@ -17,17 +17,14 @@ pub struct Entry {
     pub quantity: f64,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct AppState {
     pub buy_entries: Arc<Mutex<Vec<Entry>>>,
     pub sell_entries: Arc<Mutex<Vec<Entry>>>,
 }
 
 fn create_router() -> Router {
-    let state = AppState {
-        buy_entries: Arc::new(Mutex::new(Vec::new())),
-        sell_entries: Arc::new(Mutex::new(Vec::new())),
-    };
+    let state = AppState::default();
 
     Router::new()
         .route("/", get(handlers::index::handler))

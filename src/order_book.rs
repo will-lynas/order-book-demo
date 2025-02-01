@@ -25,6 +25,8 @@ impl OrderBook {
 
     pub fn add_sell_entry(&mut self, entry: Entry) {
         self.sell_entries.push(entry);
+        self.sell_entries
+            .sort_by(|a, b| a.price.total_cmp(&b.price));
     }
 }
 
@@ -60,6 +62,42 @@ mod tests {
         assert_eq!(buy_entries.len(), expected_prices.len());
 
         for (entry, &expected_price) in buy_entries.iter().zip(expected_prices.iter()) {
+            assert_eq!(
+                entry.price, expected_price,
+                "Expected price {} but got {}",
+                expected_price, entry.price
+            );
+        }
+    }
+
+    #[test]
+    fn test_sell_entries_maintain_sorted_order() {
+        let mut order_book = OrderBook::default();
+
+        // Add entries in arbitrary order
+        order_book.add_sell_entry(Entry {
+            price: 100.0,
+            quantity: 1.0,
+        });
+        order_book.add_sell_entry(Entry {
+            price: 150.0,
+            quantity: 2.0,
+        });
+        order_book.add_sell_entry(Entry {
+            price: 50.0,
+            quantity: 3.0,
+        });
+        order_book.add_sell_entry(Entry {
+            price: 200.0,
+            quantity: 4.0,
+        });
+
+        let (_, sell_entries) = order_book.get_first_n_entries(5);
+
+        let expected_prices = vec![50.0, 100.0, 150.0, 200.0];
+        assert_eq!(sell_entries.len(), expected_prices.len());
+
+        for (entry, &expected_price) in sell_entries.iter().zip(expected_prices.iter()) {
             assert_eq!(
                 entry.price, expected_price,
                 "Expected price {} but got {}",

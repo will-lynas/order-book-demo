@@ -6,8 +6,8 @@ pub struct Entry {
 
 #[derive(Default)]
 pub struct OrderBook {
-    pub buy_entries: Vec<Entry>,
-    pub sell_entries: Vec<Entry>,
+    buy_entries: Vec<Entry>,
+    sell_entries: Vec<Entry>,
 }
 
 impl OrderBook {

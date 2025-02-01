@@ -25,22 +25,6 @@ pub struct AppState {
     pub sell_entries: Arc<Mutex<Vec<Entry>>>,
 }
 
-#[derive(Template)]
-#[template(path = "index.html")]
-struct IndexTemplate {
-    buy_entries: Vec<Entry>,
-    sell_entries: Vec<Entry>,
-}
-
-async fn index_handler(State(state): State<AppState>) -> IndexTemplate {
-    let buy_entries = state.buy_entries.lock().unwrap().clone();
-    let sell_entries = state.sell_entries.lock().unwrap().clone();
-    IndexTemplate {
-        buy_entries: buy_entries.into_iter().take(6).collect(),
-        sell_entries: sell_entries.into_iter().take(6).collect(),
-    }
-}
-
 fn create_router() -> Router {
     let state = AppState {
         buy_entries: Arc::new(Mutex::new(Vec::new())),
@@ -48,7 +32,7 @@ fn create_router() -> Router {
     };
 
     Router::new()
-        .route("/", get(index_handler))
+        .route("/", get(handlers::index::handler))
         .route("/submit-entry", post(handlers::submit::handler))
         .nest_service("/static", ServeDir::new("static"))
         .with_state(state)

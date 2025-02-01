@@ -1,5 +1,6 @@
 use anyhow::Result;
 use axum::{
+    http::StatusCode,
     routing::{get, post},
     Router,
 };
@@ -22,6 +23,7 @@ fn create_router() -> Router {
     let state = AppState::default();
 
     Router::new()
+        .route("/favicon.ico", get(|| async { StatusCode::NO_CONTENT }))
         .route("/", get(handlers::index::handler))
         .route("/submit-entry", post(handlers::submit::handler))
         .nest_service("/static", ServeDir::new("static"))
